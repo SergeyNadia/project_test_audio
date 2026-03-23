@@ -1,0 +1,15 @@
+packages:
+  "framer-motion": "For premium smooth animations on the status stepper and page transitions"
+  "clsx": "Utility for constructing className strings conditionally"
+  "tailwind-merge": "Utility to merge tailwind classes safely"
+  "lucide-react": "For beautiful icons across the UI"
+
+images:
+  - path: "artifacts/music-app/public/images/ambient-bg.png"
+    description: "Dark, moody, professional abstract background with deep purple and electric blue bioluminescent gradients, subtle grain texture, minimalist"
+    aspect_ratio: "16:9"
+
+notes:
+  - Uses @workspace/api-client-react for generated React Query hooks
+  - Auth uses standard browser redirects to /api/auth/login and /api/auth/logout
+  - Session history is managed locally via React state since no list API endpoint exists

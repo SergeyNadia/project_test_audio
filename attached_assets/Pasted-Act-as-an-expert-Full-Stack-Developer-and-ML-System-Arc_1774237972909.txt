@@ -1,0 +1,45 @@
+Act as an expert Full-Stack Developer and ML System Architect. 
+Build a web application for an AI Music Generation service. 
+
+TECH STACK:
+- Frontend: React (with Tailwind CSS for a modern, dark-theme UI).
+- Backend: Python with FastAPI.
+- Authentication: Clerk.
+
+ARCHITECTURE & LOGIC (Async Task Pattern):
+This system must simulate an asynchronous integration with an external GPU farm. 
+Do not block the HTTP request during generation.
+
+1. CLERK AUTHENTICATION: 
+Integrate Clerk on the frontend. The main generation interface should only be visible to logged-in users. Unauthenticated users should see a landing page asking them to sign in.
+
+2. FRONTEND UI:
+- A text input field for the user to describe the music (e.g., "Chill lo-fi beat").
+- A "Generate Music" button.
+- A status section that shows real-time updates (e.g., "Queueing...", "Waking up GPU...", "Generating audio...", "Complete!").
+- An HTML5 audio player that appears when the audio is ready.
+
+3. BACKEND API (FastAPI):
+Create two main REST endpoints to handle the async process:
+
+- POST /api/generate
+  Accepts a JSON payload: {"prompt": "user text"}.
+  Generates a unique `task_id` (UUID).
+  Stores the task in a simple in-memory dictionary with status "pending".
+  Starts a background task (using FastAPI's BackgroundTasks or asyncio) to simulate the GPU work.
+  Immediately returns: {"task_id": "the-uuid", "status": "pending"}.
+
+- GET /api/status/{task_id}
+  Returns the current status of the task. 
+
+4. THE MOCK GPU WORKER (Background Task):
+In the background task, simulate the ML inference process:
+- Sleep for 3 seconds (simulate Cold Start/Waking up GPU). Update task status to "generating".
+- Sleep for 10 seconds (simulate Model Inference).
+- Update task status to "complete" and attach a hardcoded public URL of an existing royalty-free audio file (e.g., a sample mp3 file from an open CDN) as the `result_url`.
+
+REQUIREMENTS:
+- The frontend must poll the `/api/status/{task_id}` endpoint every 2 seconds after submitting a generation request.
+- Ensure CORS is properly configured in FastAPI.
+- Provide clear comments in the FastAPI code showing exactly where the *real* external HTTP call to a service like RunPod or Modal will eventually replace the mock sleep logic.
+- Output a polished, working prototype.
